@@ -1,0 +1,1 @@
+document.querySelector('#read').onclick = async () => { const response = await fetch('/api/events?cursor=0'); document.querySelector('#events').textContent = JSON.stringify(await response.json(), null, 2); };
