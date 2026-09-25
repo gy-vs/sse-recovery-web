@@ -1,1 +1,65 @@
-<!doctype html><html><body><main><h1>Event stream recovery</h1><button id="read">Read from cursor zero</button><pre id="events"></pre></main><script type="module" src="/app.js"></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>SSE 断线恢复</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 2rem; color: #222; }
+  section { border: 1px solid #ddd; border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+  .status { display: flex; gap: 1.5rem; align-items: baseline; flex-wrap: wrap; margin: .5rem 0 1rem; }
+  .status dt { color: #666; font-size: .85rem; }
+  .status dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #state { padding: .15rem .6rem; border-radius: 999px; background: #999; color: #fff; }
+  #state.live { background: #1a7f37; }
+  #state.catch { background: #bf6300; }
+  #state.resync { background: #b62324; }
+  #state.wait { background: #6e6e6e; }
+  .controls { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+  input { padding: .3rem .5rem; }
+  button { padding: .35rem .8rem; cursor: pointer; }
+  #record { font-family: ui-monospace, monospace; font-size: .85rem; max-height: 16rem; overflow: auto; padding-left: 1.2rem; }
+  #record li { margin: .15rem 0; }
+  .tag { display: inline-block; min-width: 4.5rem; padding: 0 .4rem; border-radius: 4px; color: #fff; font-size: .75rem; text-align: center; margin-right: .5rem; }
+  .tag.live { background: #1a7f37; } .tag.replay { background: #0969da; } .tag.snapshot { background: #6f42c1; }
+  .tag.duplicate { background: #bf6300; } .tag.marker { background: #b62324; } .tag.gap { background: #b62324; }
+  #transitions { font-family: ui-monospace, monospace; font-size: .8rem; color: #555; max-height: 10rem; overflow: auto; }
+  pre { background: #f6f8fa; padding: .75rem; border-radius: 6px; max-height: 12rem; overflow: auto; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Event stream recovery</h1>
+
+  <section>
+    <h2>实时订阅(可恢复游标)</h2>
+    <dl class="status">
+      <div><dt>状态</dt><dd id="state" class="wait">空闲</dd></div>
+      <div><dt>本标签页游标</dt><dd id="cursor">0</dd></div>
+      <div><dt>共享确认游标</dt><dd id="shared">0</dd></div>
+      <div><dt>重复事件</dt><dd id="dups">0</dd></div>
+      <div><dt>顺序缺口</dt><dd id="gaps">0</dd></div>
+    </dl>
+    <div class="controls">
+      <label>用户 <input id="user" value="demo" size="6"></label>
+      <label>消息 <input id="text" value="hello" size="12"></label>
+      <button id="connect">连接</button>
+      <button id="disconnect">断开</button>
+      <button id="publish">发布事件</button>
+      <label>强制游标 <input id="forced" type="number" value="0" min="0" style="width:5rem"></label>
+      <button id="reconnect-stale">以旧游标重连</button>
+    </div>
+    <h3>事件记录</h3>
+    <ul id="record"></ul>
+    <h3>状态日志</h3>
+    <ol id="transitions"></ol>
+  </section>
+
+  <section>
+    <h2>旧客户端(无游标)</h2>
+    <button id="read">Read from cursor zero</button>
+    <pre id="events"></pre>
+  </section>
+</main>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
