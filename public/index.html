@@ -1,1 +1,58 @@
-<!doctype html><html><body><main><h1>Event stream recovery</h1><button id="read">Read from cursor zero</button><pre id="events"></pre></main><script type="module" src="/app.js"></script></body></html>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Event stream recovery</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+  <h1>Event stream recovery</h1>
+
+  <section id="panel">
+    <p>Status: <strong id="status" data-status="connecting">connecting</strong>
+       · cursor <span id="cursor">0</span>
+       · acked locally <span id="acked">0</span>
+       · server ack <span id="server-ack">–</span></p>
+    <p id="counters">applied 0 · duplicates 0 · gaps 0</p>
+    <p>
+      <label>User <input id="user" value="demo-user"></label>
+    </p>
+  </section>
+
+  <section>
+    <h2>Publish (works while disconnected)</h2>
+    <input id="key" placeholder="key" value="alpha">
+    <input id="value" placeholder="value" value="1">
+    <button id="set">set</button>
+    <button id="delete">delete key</button>
+  </section>
+
+  <section>
+    <h2>Connection</h2>
+    <button id="disconnect">disconnect</button>
+    <input id="reconnect-cursor" size="6" placeholder="0">
+    <button id="reconnect">reconnect with cursor</button>
+    <button id="connect-live">connect live-only (legacy)</button>
+    <button id="full-sync">full sync</button>
+  </section>
+
+  <section>
+    <h2>State</h2>
+    <pre id="state">{}</pre>
+  </section>
+
+  <section>
+    <h2>Recovery record</h2>
+    <pre id="records"></pre>
+  </section>
+
+  <section>
+    <h2>Legacy poll</h2>
+    <button id="read">Read from cursor zero</button>
+    <pre id="events"></pre>
+  </section>
+</main>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

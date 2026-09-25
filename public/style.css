@@ -1,0 +1,9 @@
+main { font-family: system-ui, sans-serif; max-width: 52rem; margin: 2rem auto; }
+section { margin-block: 1rem; }
+pre { background: #f4f4f4; padding: .75rem; overflow: auto; }
+#status { padding: .15rem .5rem; border-radius: .5rem; background: #ddd; }
+#status[data-status="live"] { background: #b7eb8f; }
+#status[data-status="catching-up"] { background: #ffe58f; }
+#status[data-status="resync-required"] { background: #ffa39e; }
+#status[data-status="disconnected"] { background: #bbb; }
+#status[data-status="connecting"] { background: #91d5ff; }
